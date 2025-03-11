@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html>
+    <head lang="en-UK">
+        <title>TODO</title>
+        <link rel="stylesheet" href="styles/main2.css">
+        <link rel="icon" type="image/x-icon" href="img/favicon.ico">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta charset="utf-8">
+        <style>
+          ul {
+            margin: 0;
+            padding: 0;
+          }
+
+          ul li {
+            cursor: pointer;
+            position: relative;
+            padding: 12px 40px 12px 40px;
+            background: var(--lgrey);
+            font-size: 18px;
+            transition: 0.2s;
+            user-select: none;
+            color: black;
+            list-style-type: none;
+          }
+
+          ul li:nth-child(odd) { background: white; }
+
+          ul li:hover { background: var(--purple); }
+
+          ul li.todo-category {
+            padding-left: 15px;
+            font-weight: bold;
+            font-style: italic;
+            background-color: var(--yellow);
+          }
+
+          ul li.todo-category:after {
+                position: absolute;
+                content: "";
+                top: 15px;
+                right: 25px;
+                width: 0;
+                height: 0;
+                border: 6px solid transparent;
+                border-color: transparent transparent var(--purple) transparent;
+            }
+
+            ul li.todo-category.hidden:after {
+                position: absolute;
+                content: "";
+                top: 15px;
+                right: 25px;
+                width: 0;
+                height: 0;
+                border: 6px solid transparent;
+                border-color: var(--purple) transparent transparent transparent;
+            }
+
+
+          ul li.todo-checked {
+            background: var(--lgreen);
+            color: var(--dgreen);
+            text-decoration: line-through;
+          }
+
+          /* Check mark v */
+          ul li.todo-checked::before {
+            content: '';
+            position: absolute;
+            border-color: var(--dgreen);
+            border-style: solid;
+            border-width: 0 2px 2px 0;
+            top: 10px;
+            left: 16px;
+            transform: rotate(45deg);
+            height: 15px;
+            width: 7px;
+          }
+
+          .todo-header {
+            background-color: var(--brown);
+            padding: 30px 40px;
+            color: white;
+            text-align: center;
+          }
+
+          /* Clear floats */
+          .todo-header:after {
+            content: "";
+            display: table;
+            clear: both;
+          }
+
+          input {
+            margin: 0;
+            border: none;
+            border-radius: 0;
+            width: 50%;
+            padding: 10px;
+            float: left;
+            font-size: 16px;
+          }
+
+          #todo-category {
+            width: 15%;
+            margin-left: 2px;
+          }
+
+          /* Add pseudo button */
+          .todo-add, .todo-undo {
+            padding: 10px;
+            width: 20%;
+            background-color: var(--lgrey);
+            color: black;
+            float: left;
+            text-align: center;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.3s;
+            border-radius: 0;
+          }
+
+          .todo-undo { width: 10%; float: right; }
+
+          .todo-undo.disabled {
+            background-color: var(--dgrey);
+            color: var(--lgrey);
+            cursor: default;
+          }
+
+          .todo-undo.todo-undo.disabled:hover { background-color: var(--dgrey); }
+
+          .todo-add:hover, .todo-undo:hover { background-color: var(--dgreen); }
+
+          .todo-close, .todo-up {
+            position: absolute;
+            right: 0;
+            top: 0;
+            padding: 12px 16px 12px 16px;
+            height: 100%;
+          }
+
+          .todo-up {
+            right: 42px;
+          }
+
+          .todo-close:hover, .todo-up:hover { background-color: var(--brown); }
+        </style>
+    </head>
+    <body>
+        <header><h1>TODO</h1><div>Client-side TODO list</div></header>
+        <nav>
+          <a href="https://github.com/VadimKey">Home</a>
+          <a href="index.html">Demo</a>
+          <a href="#" class="active">TODO</a>
+          <a href="https://github.com/VadimKey/VadimKey/blob/main/README.md" class="right">About</a>
+        </nav>
+
+        <section>
+            <div class="column side">
+                <div class="card">
+                  This TODO lists keeps the item on the client side, no data is transmitted to the server. No third-party libraries that can spy you are used.
+                  <p>Features:</p>
+                  <ul>
+                    <li>Server-less</li>
+                    <li>Categories</li>
+                    <li>Limitless undo</li>
+                  </ul>
+                </div>
+            </div>
+
+            <div class="column middle">
+              <div id="todo-header" class="todo-header">
+                <input type="text" id="todo-input" placeholder="Item...">
+                <input type="text" list="todo-categories" id="todo-category" placeholder="Category...">
+                <span onclick="addTodoItem()" class="todo-add">Add</span>
+                <span id="todo-undo" onclick="undoAction()" class="todo-undo disabled" title="Undo">&#9100;</span>
+              </div>
+
+              <datalist id="todo-categories">
+              </datalist>
+
+              <ul id="todo-list">
+              </ul>
+            </div>
+
+            <div class="column side">
+              <div class="card">
+                <a href="https://www.w3schools.com/howto/howto_js_todolist.asp" target="_blank">Original idea in w3schools.com</a>
+              </div>
+            </div>
+        </section>
+
+        <footer>
+            <div>&copy; 2024-2025 VK</div>
+            <div><a href="mailto:dimbula@gmail.com">email</a></div>
+        </footer>
+        <script>        
+          const history = [];
+          let todo = {};
+
+          // When clicked on item make it "checked"
+          const todoList = document.getElementById('todo-list');
+          todoList.addEventListener('click', function(ev) {
+              if ( ev.target.tagName === 'LI' ) {
+                toggle( ev.target );
+              }
+          }, false);
+
+
+          const categories = document.getElementById('todo-categories');
+
+          function loadFromStorage() {
+            const items = JSON.parse( localStorage.getItem('dimbula-todo-list') );
+            for (c in items) {
+              if (items[c].length == 0) delete items[c];
+            }
+            if ( ! items ) return;
+            todo = items;
+            console.log("Loaded", todo);
+          }
+
+          function saveToStorage() {
+            const js = JSON.stringify(todo);
+            localStorage.setItem('dimbula-todo-list', js);
+          }
+
+
+          // Add a close button to remove items from the list
+          function addCloseButton(item, category, value) {
+            let closeBtn = document.createElement('span');
+            closeBtn.innerHTML = '&times;';
+            closeBtn.className='todo-close';
+            closeBtn.onclick = function(ev) { deleteItem(category, value); }
+            item.appendChild(closeBtn);
+          }
+
+          function addUpButton(item, category, value) {
+            let upBtn = document.createElement('span');
+            upBtn.innerHTML = '&uarr;';
+            upBtn.className='todo-up';
+            upBtn.onclick = function(ev) { upItem(category, value); }
+            item.appendChild(upBtn);
+          }
+
+          function addToLookup(category) {
+            const item = document.createElement('option');
+            item.value = category;
+            categories.appendChild(item);
+          }
+
+          function show() {
+            todoList.replaceChildren();
+            categories.replaceChildren();
+            for ( category in todo ) {
+              // Add a category item
+              const cli = document.createElement('li');
+              cli.appendChild( document.createTextNode( category ) );
+              cli.className = 'todo-category';
+              todoList.appendChild(cli);
+
+              // Add a category to Category lookup
+              addToLookup(category);
+
+              // Add all items in the category
+              let first = true;
+              let visible = true;
+              for( let it of todo[category] ) {
+                if ( ! it.visible ) { visible = false; break; }
+                let li = document.createElement('li');
+                li.appendChild( document.createTextNode(it.value) );
+                li.tagggedObject = it;
+                if ( it.checked ) li.className += ' todo-checked';
+                addCloseButton(li, category, it.value);
+                if (first) first = false;
+                else addUpButton(li, category, it.value);
+                todoList.appendChild(li);
+              }
+
+              if (! visible ) {
+                cli.className += ' hidden'
+              }
+            }
+          }
+
+          function addToHistory() {
+            history.push( JSON.stringify(todo) );
+            let undoBtn = document.getElementById('todo-undo');
+            if ( undoBtn.classList.contains('disabled') ) undoBtn.classList.toggle('disabled');
+          }
+
+          function addTodoItem() {
+            const input = document.getElementById('todo-input')
+            if ( input.value === '' ) return;
+
+            let category = document.getElementById('todo-category').value;
+            if ( category === '' ) category = 'Other';
+
+            if (category in todo && todo[category].find( (e) => input.value == e.value) ) {
+              alert("Item already exist!");
+              return;
+            }
+
+            addToHistory();
+
+            if ( ! (category in todo) ) {
+              todo[category] = [];
+            }
+            todo[category].push( {value:input.value, checked:false, visible:true} );
+            // Make all items visible in this category
+            for (let item of todo[category]) { item.visible = true; }
+
+            saveToStorage();
+            show();
+          }
+
+          function deleteItem(category, value) {
+            if ( ! ( category in todo ) ) return;
+            const items = todo[category];
+            let index = -1;
+            for (let i in items) {
+              if ( items[i].value == value ) {
+                index = i;
+                break;
+              }
+            }
+            if ( index != - 1 ) {
+              addToHistory();
+              todo[category].splice(index, 1);
+              saveToStorage();
+              show();
+            }
+          }
+
+          function upItem(category, value) {
+            if ( ! ( category in todo ) ) return;
+            const items = todo[category];
+            let index = -1;
+            for (let i in items) {
+              if ( items[i].value == value ) {
+                index = i;
+                break;
+              }
+            }
+            if ( index >= 1 ) {
+              addToHistory();
+              // swap with the element above
+              [ todo[category][index-1], todo[category][index] ] = [ todo[category][index], todo[category][index-1] ]
+              saveToStorage();
+              show();
+            }
+          }
+
+          function toggleCategory(li) {
+            const cat = li.innerText;
+            if (cat in todo) {
+              addToHistory();
+              for (let item of todo[cat]) {
+                if (item.visible == undefined) item.visible = true;
+                else item.visible = ! item.visible;
+              }
+              saveToStorage();
+              show();
+            }
+          }
+
+          function toggle(li) {   
+            if ( li.classList.contains('todo-category') ) {
+              toggleCategory(li);
+              return;
+            }
+            addToHistory();
+            li.classList.toggle('todo-checked');
+            li.tagggedObject.checked = ! li.tagggedObject.checked;
+            saveToStorage();
+          }
+
+          function undoAction() {
+            todo = JSON.parse( history.pop() );
+            show();
+            saveToStorage();
+
+            if ( history.length == 0 ) {
+              document.getElementById('todo-undo').classList.toggle('disabled');
+              return;
+            }
+          }
+
+          loadFromStorage();
+          show();
+
+        </script>
+    </body>
+</html>
