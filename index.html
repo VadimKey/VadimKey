@@ -1,9 +1,1038 @@
+<!DOCTYPE html>
 <html>
-  <head>
-    <title>Hello</title>
-  </head>
-  <body>
-    <h1>Hello!</h1>
-    <p>Hello world</p>
-  </body>
-</html>
+    <head lang="en-UK">
+      <title>Front End Demo</title>
+      <link rel="stylesheet" href="styles/main2.css">
+      <link rel="stylesheet" href="styles/imggal.css">
+      <link rel="icon" type="image/x-icon" href="img/favicon.ico">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <meta charset="utf-8">
+      <style>
+        div.game {
+          display: flex;
+        }
+
+        @media only screen and (max-width: 600px) {
+          div.game {
+            flex-direction: column;
+          }
+
+          div.gameControls {
+            display: none;
+          }
+        }
+
+        #container {
+          width: 400px;
+          height: 450px;
+          position: relative;
+          background: var(--yellow);
+        }
+
+        #animate {
+          width: 50px;
+          height: 50px;
+          position: absolute;
+          background-color: var(--lred);
+          border-radius: 50%;
+        }
+
+                   /*
+            *
+            * FLIP A COIN ROLL A DICE
+            *
+            */
+            .flip-box {
+                justify-content: center;
+                background-color: transparent;
+                width: 100px;
+                height: 100px;
+                perspective: 600px; /* 3d effect */
+                margin-right: 30px;
+            }
+
+            .flip-box-inner {
+                position: relative;
+                width: 100%;
+                height: 100%;
+                text-align: center;
+                transition: transform 1s ease-out;
+                transform-style: preserve-3d;
+            }
+
+            .flip-box:hover .flip-box-inner { transform: rotateY(1260deg); }
+
+            .flip-box:hover .flip-box-inner.vertical { transform: rotateX(900deg); }
+
+            .flip-box-front, .flip-box-back {
+                position: absolute;
+                width: 100%;
+                height: 100%;
+                backface-visibility: hidden;
+                padding-top: 10%;
+            }
+
+            .flip-box-front {
+                background-color: var(--purple);
+                color: black;
+            }
+
+            .flip-box-front.vertical {
+                background-color: var(--brown);
+            }
+
+            .flip-box-back {
+                background-color: var(--lgreen);
+                color: var(--dred);
+                transform: rotateY(1260deg);
+            }
+
+            .flip-box-back.vertical { transform: rotateX(900deg); background-color: var(--yellow); }
+      </style>
+    </head>
+    <body onload="document.getElementById('global_loader').style.display='none';generateSlideshows();generateLightboxes();generateNonModalLightboxes()">
+        <header><h1>Front End Demo</h1><div>HTML/CSS/JavaScript/SVG</div></header>
+        <nav>
+          <a href="index.html">Home</a>
+          <a href="#" class="active">Demo</a>
+          <a href="about.html" class="right">About</a>
+      </nav>
+
+      <div id="global_loader" class="loader global"></div>
+
+      <section>
+        <div class="column side">
+          <div class="card">
+            <p>This page showcases what I have learned while studying frontend technologies, primarily using the <a href="https://www.w3schools.com/" target="_blank">W3Schools</a> website.
+            <p>All demos run on the client side and do not use any server-side functionalities. I did my best to support mobile devices.</p>
+            <div>These demos (and, <div class="tooltip">at the moment<span class="tooltiptext">Correct by February 2025</span></div>, this website) do not rely on any third-party scripts or CSS files—everything is built from scratch here.</div>
+          </div>
+          <div class="card">
+            <h3>Used Technologies &amp; APIs</h3>
+            <ul>
+              <li>HTML</li>
+              <li>CSS / Flexbox</li>
+              <li>SVG</li>
+              <li>JavaScript
+                <ul>
+                  <li>JSON</li>
+                  <li>DOM</li>
+                  <li>Math</li>
+                  <li>Canvas</li>
+                  <li>Storage</li>
+                </ul>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+      <div class="column middle">
+        <button class="css" style="width:100%" onclick="snippets()">CSS &ndash; Loader</button>
+        <div class="card" id="css_snippets" style="display:none">
+          <p>This spinning window is created using CSS border styles and animations. No JavaScript!</p>
+          <div style="display: flex; justify-content: center; width: 100%;">
+            <div>
+              <div class="loader" id="loader"></div> <div id="progress">Loading</div>
+            </div>
+          </div>
+        </div>
+        <button class="css" style="width:100%" onclick="toggle('css_gallery')">CSS &ndash; Gallery</button>
+        <div class="card" id="css_gallery" style="display:none">
+          <h2>AI generated images of shiba-inu in Orpington</h2>
+          <div class="polaroid3"> <img src="img/shiba.jpg" alt="Shiba-Inu at his home in Orpington" class="imggal"> </div>
+          <div class="polaroid3"> <img src="img/shiba-fields.jpg" alt="Shiba-Inu in Farnborough fields" class="imggal"> </div>
+          <div class="polaroid3"> <img src="img/shiba-outside.jpg" alt="Shiba-Inu walking on the street" class="imggal"> </div>
+          <div class="clearfix"></div>
+        </div>
+
+        <button class="css" style="width:100%" onclick="toggle('js_css_slideshow')">CSS/JavaScript &ndash; Slideshow</button>
+        <div class="card" id="js_css_slideshow" style="display:none">
+          <div class="slideshow-container" id="estonia">
+            <img src="img/est1.jpg" alt="Estonian Open Air Museum">
+            <img src="img/est2.jpg" alt="Estonian Open Air Museum. The mill.">
+            <img src="img/est3.jpg" alt="Estonia. Tallinn. Kadriorg park.">
+            <img src="img/est4.jpg" alt="Estonia. Tallinn. Kadriorg palace.">
+            <img src="img/ldn1.jpg" alt="London planes">
+            <img src="img/ldn2.jpg" alt="Chelsea College of Arts">
+            <img src="img/ldn3.jpg">
+            <img src="img/ldn4.jpg" alt="Vaxhaul bridge and MI-5">
+            <img src="img/ldn5.jpg" alt="">
+            <img src="img/ldn6.jpg" alt="Thames">
+          </div>
+        </div>
+
+        <button class="css" style="width:100%" onclick="toggle('js_css_lightbox')">CSS/JavaScript &ndash; Lightbox</button>
+        <div class="card" id="js_css_lightbox" style="display:none">
+          <div class="lightbox" id="my-lightbox">
+            <img src="img/est1.jpg" alt="Estonian Open Air Museum">
+            <img src="img/est2.jpg" alt="Estonian Open Air Museum. The mill.">
+            <img src="img/est3.jpg" alt="Estonia. Tallinn. Kadriorg park.">
+            <img src="img/est4.jpg" alt="Estonia. Tallinn. Kadriorg palace.">
+            <img src="img/ldn1.jpg" alt="London planes">
+            <img src="img/ldn2.jpg" alt="Chelsea College of Arts">
+            <img src="img/ldn3.jpg">
+            <img src="img/ldn4.jpg" alt="Vaxhaul bridge and MI-5">
+            <img src="img/ldn5.jpg" alt="">
+            <img src="img/ldn6.jpg" alt="Thames">
+          </div>
+        </div>
+
+        <button class="css" style="width:100%" onclick="toggle('js_css_nm_lightbox')">CSS/JavaScript &ndash; Non-modal Lightbox</button>
+        <div class="card" id="js_css_nm_lightbox" style="display:none">
+          <div class="nonmodal-lightbox" id="nml-london">
+            <img src="img/ldn1.jpg" alt="London planes">
+            <img src="img/ldn2.jpg" alt="Chelsea College of Arts">
+            <img src="img/ldn3.jpg">
+            <img src="img/ldn4.jpg" alt="Vaxhaul bridge and MI-5">
+            <img src="img/ldn5.jpg">
+            <img src="img/ldn6.jpg" alt="Thames">
+          </div>
+        </div>
+
+        <button class="css" style="width:100%" onclick="toggle('js_css_random')">CSS/JavaScript &ndash; Coin &amp; Dice</button>
+        <div class="card" id="js_css_random" style="display:none">
+        <div style="display: flex; flex-direction: row; justify-content: center;">
+            <div class="flip-box" onmouseenter="coin()">
+              <div class="flip-box-inner vertical">
+                  <div class="flip-box-front vertical" style="border-radius: 50%;">
+                      <h3>Flip a coin</h3>
+                  </div>
+                  <div class="flip-box-back vertical" style="border-radius: 50%;">
+                      <h1 id="coin-value">Back Side</h1>
+                  </div>
+              </div>
+          </div>
+
+          <div class="flip-box" onmouseenter="dice()">
+              <div class="flip-box-inner">
+                  <div class="flip-box-front">
+                      <h3>Roll a dice</h3>
+                  </div>
+                  <div class="flip-box-back">
+                      <h1 id="dice-value">Back Side</h1>
+                  </div>
+              </div>
+          </div>
+          <div class="clearfix"></div>
+        </div>
+        <script>
+            function coin() {
+                let cnt = 0;
+                let interval = setInterval(onTimer, 95);
+                function onTimer() {
+                    ++cnt;
+                    if (cnt == 10) { clearInterval(interval); }
+                    document.getElementById('coin-value').innerHTML= Math.random() > 0.5 ? 'Heads' : 'Tails';
+                }
+            }
+
+            function dice() {
+                let cnt = 0;
+                let interval = setInterval(onTimer, 100);
+                function onTimer() {
+                    ++cnt;
+                    if (cnt == 8) { clearInterval(interval); }
+                    document.getElementById('dice-value').innerHTML = Math.round(Math.random()*5+1);
+                }
+            }
+        </script>
+        </div>
+
+        <button class="css" style="width:100%" onclick="toggle('css_tooltip')">CSS &ndash; Tooltips</button>
+        <div class="card" id="css_tooltip" style="display:none">
+          <div>
+            Hover over <div class="tooltip">this text<span class="tooltiptext">I am a tooltip! Enchante!</span></div> to see a tooltip.
+            This is another example of the tooltip. <div class="tooltip">Hover over me<span class="tooltiptext">16 February 2025</span></div> to know the date when this page was created.
+          </div>
+        </div>
+        <button class="css" style="width:100%" onclick="toggle('js_json')">JavaScript &ndash; JSON Validator</button>
+        <div class="card" id="js_json" style="display:none">
+          <p>Paste JSON in the window and click Validate or Vali/Date. The only difference that Vali/Date tries to parse dates as <var>Date()</var> type. The code for validation is in <code>scripts/utils.js</code></p>
+          <textarea id="json_in" style="width:100%;height:200px;"></textarea>
+          <button onclick="validateJSON('json_in', 'json_res', false)">Validate</button>
+          <button onclick="validateJSON('json_in', 'json_res', true)">Vali/Date</button>
+          <p id="json_res"></p>
+        </div>
+
+        <button class="css" style="width:100%" onclick="toggle('js_format')">JavaScript &ndash; Code Formatter</button>
+        <div class="card" id="js_format" style="display:none">
+          <p>This simple tool allows you to paste code and it will replace special symbols by HTML mnemonics. The source code is a function <var>formatCode()</var> in <code>scripts/utils.js</code></p>
+          <textarea id="code_fmt_in" style="width:100%;height:300px;"></textarea>
+          <button class="css" onclick="formatCode('code_fmt_in', 'code_fmt_out')">Format</button>
+          <h3>Result:</h3>
+          <div class="code" id="code_fmt_out"></div>
+          <button class="css tooltip" onclick="copyToClipboard('code_fmt_out', 'copy_tooltip')" 
+          onmouseout="document.getElementById('copy_tooltip').innerHTML='Copy result to clipboard'">
+          <span class="tooltiptext" id="copy_tooltip">Copy result to clipboard</span>
+          Copy
+          </button>
+        </div>
+
+        <button class="css" style="width:100%" onclick="toggle('js_img_slider');initComparisions();">JavaScript &ndash; Image Comparison Slider</button>
+        <div class="card" id="js_img_slider" style="display:none">
+          <div class="img-comp-container" style="position: relative; height: 500px">
+            <div class="img-comp-img">
+              <img src="./img/g2025.jpeg" width="375" height="500">
+            </div>
+            <div class="img-comp-img img-comp-overlay">
+              <img src="./img/g2021.06.jpeg" width="375" height="500">
+            </div>
+          </div>
+        </div>
+
+        <button class="css" style="width:100%" onclick="toggle('js_bubble')">CSS/JavaScript &ndash; Bubble</button>
+        <div class="card" id="js_bubble" style="display:none">
+          <p>This demo uses CSS class "container" for a glass and "animate" for the ball. The ball is actually a 'div' element. Try to click on the ball!</p>
+          <p>Code for ball moving is in <code>js/dom.js</code></p>
+          <p><button class="css" onclick="myMove(this)">Start</button></p> 
+          <div id="container">
+            <div id="animate"></div>
+          </div>
+          <div id="animMsg" class="outputline"></div>
+        </div>
+
+        <button class="css" style="width:100%" onclick="toggle('svg_bubbles')">SVG/JavasScript &ndash; Bubbles</button>
+        <div class="card" id="svg_bubbles" style="display:none">
+          <p>All graphic styles for this demo is defined in <var>svg</var> element using <var>radialGradient. The movement is defined by the script in the end of this page.</var></p>
+          <svg style="width:200px;height:400px;outline: 5px solid white;" id="bubble_container">
+            <defs>
+              <radialGradient id="bb_rgrad0" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
+                <stop offset="40%" stop-color="var(--yellow)" />
+                <stop offset="80%" stop-color="var(--dcyan)" />
+                <stop offset="100%" stop-color="var(--yellow)" />
+              </radialGradient>
+
+              <radialGradient id="bb_rgrad1" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
+                <stop offset="40%" stop-color="var(--dgrey)" />
+                <stop offset="80%" stop-color="var(--dcyan)" />
+                <stop offset="100%" stop-color="var(--dgrey)" />
+              </radialGradient>
+
+              <radialGradient id="bb_rgrad2" cx="55%" cy="40%" r="50%" fx="50%" fy="50%">
+                <stop offset="40%" stop-color="var(--lgrey)" />
+                <stop offset="80%" stop-color="var(--dcyan)" />
+                <stop offset="100%" stop-color="var(--lgrey)" />
+              </radialGradient>
+
+              <radialGradient id="bb_rgrad3" cx="55%" cy="40%" r="50%" fx="50%" fy="50%">
+                <stop offset="40%" stop-color="var(--dblue)" />
+                <stop offset="80%" stop-color="var(--dcyan)" />
+                <stop offset="100%" stop-color="var(--dblue)" />
+              </radialGradient>
+
+              <radialGradient id="bb_rgrad4" cx="50%" cy="50%" r="50%" fx="30%" fy="60%">
+                <stop offset="40%" stop-color="var(--purple)" />
+                <stop offset="80%" stop-color="var(--dcyan)" />
+                <stop offset="100%" stop-color="var(--purple)" />
+              </radialGradient>
+
+              <radialGradient id="bb_rgrad5" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
+                <stop offset="40%" stop-color="var(--dgreen)" />
+                <stop offset="80%" stop-color="var(--dcyan)" />
+                <stop offset="100%" stop-color="var(--lgreen)" />
+              </radialGradient>
+
+              <radialGradient id="bb_rgrad6" cx="70%" cy="30%" r="50%" fx="50%" fy="50%">
+                <stop offset="40%" stop-color="var(--lgreen)" />
+                <stop offset="80%" stop-color="var(--dcyan)" />
+                <stop offset="100%" stop-color="var(--lgreen)" />
+              </radialGradient>
+
+              <radialGradient id="bb_rgrad7" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
+                <stop offset="40%" stop-color="var(--lcyan)" />
+                <stop offset="80%" stop-color="var(--dcyan)" />
+                <stop offset="100%" stop-color="var(--lcyan)" />
+              </radialGradient>
+
+              <radialGradient id="bb_rgrad8" cx="50%" cy="50%" r="50%" fx="30%" fy="30%">
+                <stop offset="40%" stop-color="var(--dred)" />
+                <stop offset="80%" stop-color="var(--dcyan)" />
+                <stop offset="100%" stop-color="var(--dred)" />
+              </radialGradient>
+
+              <radialGradient id="bb_rgrad9" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
+                <stop offset="40%" stop-color="var(--lred)" />
+                <stop offset="80%" stop-color="var(--dcyan)" />
+                <stop offset="100%" stop-color="var(--lred)" />
+              </radialGradient>
+
+              <radialGradient id="bb_rgrad10" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
+                <stop offset="40%" stop-color="var(--lpink)" />
+                <stop offset="80%" stop-color="var(--yellow)" />
+                <stop offset="85%" stop-color="var(--dcyan)" />
+                <stop offset="100%" stop-color="var(--lpink)" />
+              </radialGradient>
+
+              <radialGradient id="bb_rgrad12" cx="50%" cy="50%" r="50%" fx="30%" fy="60%">
+                <stop offset="40%" stop-color="var(--brown)" />
+                <stop offset="80%" stop-color="var(--dcyan)" />
+                <stop offset="100%" stop-color="var(--brown)" />
+              </radialGradient>
+
+              <radialGradient id="bb_rgrad13" cx="50%" cy="50%" r="50%" fx="30%" fy="60%">
+                <stop offset="40%" stop-color="black" />
+                <stop offset="80%" stop-color="var(--dcyan)" />
+                <stop offset="100%" stop-color="black" />
+              </radialGradient>
+
+              <radialGradient id="bb_rgrad14" cx="50%" cy="50%" r="50%" fx="30%" fy="60%">
+                <stop offset="40%" stop-color="white" />
+                <stop offset="80%" stop-color="var(--dcyan)" />
+                <stop offset="100%" stop-color="white" />
+              </radialGradient>
+            </defs>
+            <rect width="200" height="400" fill="var(--dcyan)"/>
+          </svg>
+          <br>
+          <button class="css" onclick="addBubble()">Add</button>
+          <button class="css" onclick="removeBubble()">Remove</button>
+          <button class="css" onclick="startBubbles()">Start</button>
+          <button class="css" onclick="stopBubbles()">Stop</button>
+        </div>
+
+        <button class="css" style="width:100%" onclick="toggle('svg_moon')">SVG/JavasScript &ndash; Moon Phases</button>
+        <div class="card" id="svg_moon" style="display:none">
+          <p>Here we use SVG to draw moon and earth shadow for the current day, you can use &lt;&lt;/&gt;&gt; buttons to know moon phases around today.
+            The text below shows the percentage of the moon  month, it's stage and illumination.
+            The source code for this is made as a module in <code>js/moon.js</code>
+          </p>
+          <svg width="200" height="200">
+            <defs>
+            <radialGradient id="moon_grad" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
+                <stop offset="25%" stop-color="var(--yellow)" />
+                <stop offset="100%" stop-color="var(--dgrey)" />
+            </radialGradient> 
+            <filter id="moon_shadow_blur" x="0" y="0"><feGaussianBlur in="SourceGraphic" stdDeviation="15"/></filter>
+            </defs>
+            <!-- Moon -->                                        <circle id="svg_moon" cx="100" cy="100" r="80" fill="url(#moon_grad)"/>
+            <!-- Shadow mask (controls how much is shadowed) --> <clipPath id="svg_moonphase"><circle id="svg_earthshadow" cx="80" cy="100" r="100" /></clipPath>
+            <!-- Dark circle for the shadow -->                  <circle id="svg_earthmask" cx="100" cy="100" r="80" fill="var(--dgrey)" clip-path="url(#svg_moonphase)" filter="url(#moon_shadow_blur)" />
+          </svg>
+          <div width="100%">
+            <button class="css" style="width:100px" id="moonPrev">&lt;&lt;</button> <button class="css" style="width:100px" id="moonNext">&gt;&gt;</button>
+          </div>
+          <div class="outputline" id="moon_debug"></div>
+          <script type="module">
+              import { moonNextDay, moonPreviousDay } from "./scripts/moon.js";
+              document.getElementById("moonPrev").addEventListener('click', moonPreviousDay);
+              document.getElementById("moonNext").addEventListener('click', moonNextDay);
+          </script>
+        </div>
+
+        <button class="css" style="width:100%" onclick="toggle('canvas_js_clock')">Canvas/JavasScript &ndash; Clock</button>
+        <div class="card" id="canvas_js_clock" style="display:none">
+          <canvas id="canvas_clock" width="400" height="400" style="background-color: var(--dgrey);border: 0px solid black"></canvas>
+        </div>
+
+        <button class="css" style="width:100%" onclick="toggle('canvas_game')">Canvas/JavasScript &ndash; Game</button>
+        <div class="card" id="canvas_game" style="display:none">
+          <p>Use buttons or arrow-keys to move the piece. From the touch screen you can use the blue buttons. Touching anywhere on screen will have the same effect as "up" button.</p>
+          <button class="css" onclick="startGame()">Start</button>
+          <div class="game">
+            <canvas id="gameArea" width="480" height="270" style="background-color: var(--lgrey);border: 1px solid white;"></canvas>
+            <table id="highScores" style="max-width:200px;margin-left: 30px;">
+              <caption><h3>High scores</h3></caption>
+              <thead>
+                <tr><th>Player</th><th>Score</th></tr>
+              </thead>
+              <tbody>
+
+              </tbody>
+            </table>
+          </div>
+          <div class="gameControls" style="text-align:center;width:480px;">
+            <button onmousedown="moveup()" onmouseup="stopMove()">UP</button><br><br>
+            <button onmousedown="moveleft()" onmouseup="stopMove()">LEFT</button>
+            <button onmousedown="moveright()" onmouseup="stopMove()">RIGHT</button><br><br>
+            <button onmousedown="movedown()" onmouseup="stopMove()">DOWN</button>
+          </div>
+        </div>        
+      </div>
+
+      <div class="column side">
+        <div class="card">
+          <h2>More</h2>
+          <ul>
+            <li><a href="garage.html">Garage</a></li>
+            <li><a href="css/css.html">CSS</a></li>
+            <li><a href="js/js.html">JavaScript</a></li>
+            <li><a href="svg.html">SVG Graphics</a></li>
+            <li><a href="js/canvas.html">Canvas Graphics</a></li>
+            <li><a href="misc/img.html">Image Snippets</a></li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>See also</h3>
+          <ul>
+            <li><a href="https://en.wikipedia.org/wiki/Demoscene" target="_blank">Demoscene</a></li>
+          </ul>
+        </div>
+      </div>
+
+    </section>
+
+  <footer>
+    <div>&copy; 2024-2025 VK</div>
+    <div><a href="mailto:dimbula@gmail.com">email</a></div>
+  </footer>
+
+  <div id="galModal" class="modal" style="border: 1px solid black;">
+    <span id="galClose">&times;</span>
+    <img class="modal-content" id="galImg">
+    <div id="galCaption"></div>
+  </div>
+
+  <script src="scripts/imggal.js"></script>
+  <script src="scripts/utils.js"></script>
+  <script src="scripts/dom.js"></script>
+  <script>
+    function startLoading() {
+      document.getElementById('loader').style.display = "block";
+      document.getElementById('progress').innerHTML = "Loading";
+      let loader = setInterval( () => document.getElementById('progress').innerHTML += ".", 1000);
+      setTimeout( () => { 
+        clearInterval(loader); 
+        document.getElementById('loader').style.display = "none";
+        document.getElementById('progress').innerHTML = "Done";
+      }, 10000);
+    }
+
+    function toggle(el) {
+      const element = document.getElementById(el);
+      const visible = element.style.display != 'none';
+      element.style.display = visible ? 'none' : 'block';
+      return !visible;
+    }
+
+    function snippets() { 
+      if ( toggle('css_snippets') ) {
+         startLoading(); 
+      }
+    }
+  </script>
+<script>
+  /***********************
+   BUBBLES DEMO 
+   ***********************/
+  let bubbles = [];
+
+  // Checks if new object overlaps with any existing object
+  function canPlace(obj) {
+    for (const other of bubbles) {
+      const d = Math.sqrt( (other.x - obj.x)**2 + (other.y - obj.y)**2 );
+      const sum = other.r + obj.r;
+      if (d < sum) return false;
+    }
+    return true;
+  }
+
+  function doCollissions(obj) {
+    for (const other of bubbles) {
+      if (other === obj) continue;
+      const d = Math.sqrt( (other.x - obj.x)**2 + (other.y - obj.y)**2 );
+      const sum = other.r + obj.r;
+      if (d <= sum) {
+        if (obj.x - obj.r > 0 && obj.x + obj.r < 200) obj.x -= obj.dx;
+        else other.x -= other.dx;
+        if (obj.y - obj.r > 0 && obj.y + obj.r < 400) obj.y -= obj.dy;
+        else other.y -= other.dy;
+
+        [other.dx, obj.dx] = [obj.dx, other.dx];
+        [other.dy, obj.dy] = [obj.dy, other.dy]
+        return true;
+      }
+    }
+    return false;
+  }
+
+  function createBubble() {
+    let obj;
+    let cnt = 0;
+    do {
+      const r = Math.round( Math.random() * 40 ) + 10;
+      obj = {
+        x: r + Math.round( Math.random() * (200-r*2) ), 
+        y: r + Math.round( Math.random() * (400-r*2) ),
+        r: r,
+        dx: Math.random() > 0.5 ? 1 : -1,
+        dy: Math.random() > 0.5 ? 1 : -1};
+      ++cnt;
+      if (cnt > 3000) {
+        return null;
+      }
+    } while ( ! canPlace(obj) );
+    
+    bubbles.push( obj );
+    return obj;
+  }
+
+  function addBubble() {
+    const svgns = 'http://www.w3.org/2000/svg';
+    let c = document.getElementById('bubble_container');
+    let b = document.createElementNS(svgns, "circle");
+    bbl = createBubble();
+    if (! bbl) {
+      alert('There is no space to create more bubbles!');
+    }
+    b.setAttribute('id', 'bbl_' + (bubbles.length-1) );
+    b.setAttribute('cx', bbl.x);
+    b.setAttribute('cy', bbl.y);
+    b.setAttribute('r', bbl.r);
+    b.setAttribute('fill', 'url(#bb_rgrad' + Math.trunc( Math.random() * 15 ) + ')' );
+    c.appendChild(b);
+  }
+
+  function removeBubble() {
+    if (bubbles.length > 0) {
+      const o = bubbles.pop();
+      const id = 'bbl_' + bubbles.length;
+      const svg = document.getElementById(id);
+      const cont = document.getElementById('bubble_container');
+      cont.removeChild(svg);
+    }
+  }
+
+
+  let interval;
+
+  function moveBubles() {
+    for (let i in bubbles) {
+      let b = bubbles[i];
+
+      b.x += b.dx;
+      b.y += b.dy;
+
+      doCollissions(b);
+
+      if (b.x + b.r > 200) { b.dx *= -1; }
+      else if (b.x - b.r < 0) { b.dx *= -1; }
+      if (b.y + b.r > 400) { b.dy *= -1; }
+      else if (b.y - b.r < 0) { b.dy *= -1; }
+
+      let svg = document.getElementById('bbl_' + i);
+      svg.setAttribute('cx', b.x);
+      svg.setAttribute('cy', b.y);                
+    }
+  }
+
+  function startBubbles() {
+    if (interval) return;
+    interval = setInterval(moveBubles, 40);
+  }
+
+  function stopBubbles() {
+    if (! interval) return;
+    clearInterval(interval);
+    interval = null;
+  }
+</script>
+
+<script>
+  function startClock() {
+    const clock_canvas = document.getElementById('canvas_clock');
+    const clk_ctx = clock_canvas.getContext("2d");
+    let radius = clock_canvas.height / 2;
+    clk_ctx.translate( radius, radius );
+
+    setInterval(drawClock, 1000, clk_ctx, radius * 0.9);
+  }
+
+  function drawClock(ctx, radius) {
+    drawFace(ctx, radius);
+    drawTicks(ctx, radius);
+    drawTime(ctx, radius);
+  }
+
+  function drawFace(ctx, radius) {
+    // create a radial gradient
+    const grad = ctx.createRadialGradient(0, 0, radius * 0.95, 0, 0, radius * 1.05);
+    grad.addColorStop(0, '#555');
+    grad.addColorStop(0.5, 'white');
+    grad.addColorStop(1, '#555');
+
+    // white face
+    ctx.beginPath();
+    ctx.arc(0, 0, radius, 0, 2 * Math.PI);
+    ctx.fillStyle = 'white';
+    ctx.fill();
+
+    // face stroke is a radial gradient
+    ctx.strokeStyle = grad;
+    ctx.lineWidth = radius * .1;
+    ctx.stroke();
+  }
+
+  function drawTicks(ctx, radius) {
+    for (let n = 1; n < 13; ++n) {
+      const ang = n * Math.PI / 6;
+      ctx.rotate(ang);
+      ctx.translate(0, -radius*0.9);
+      ctx.beginPath();
+      ctx.moveTo(0,0);
+      ctx.lineTo(0, radius*0.2);
+      ctx.lineWidth = radius * 0.05;
+      ctx.strokeStyle = 'black';
+      ctx.stroke();
+      ctx.translate(0, radius*0.9);
+      ctx.rotate(-ang);
+    }
+    for (let n = 1; n < 61; ++n) {
+      const ang = n * Math.PI / 30;
+      ctx.rotate(ang);
+      ctx.translate(0, -radius*0.9);
+      ctx.beginPath();
+      ctx.moveTo(0,0);
+      ctx.lineTo(0, radius*0.06);
+      ctx.lineWidth = radius * 0.02;
+      ctx.strokeStyle = 'black';
+      ctx.stroke();
+      ctx.translate(0, radius*0.9);
+      ctx.rotate(-ang);
+    }
+  }
+
+  function drawTime(ctx, radius) {
+    const now = new Date();
+    let hour = now.getHours();
+    let minute = now.getMinutes();
+    let second = now.getSeconds();
+    // hour
+    hour = hour % 12;
+    hour = (hour*Math.PI/6)+(minute*Math.PI/(6*60))+(second*Math.PI/(360*60));
+    drawHand(ctx, hour, radius * 0.6, radius * 0.045, radius * 0.18);
+    // minute
+    minute = (minute*Math.PI/30)+(second*Math.PI/(30*60));
+    drawHand(ctx, minute, radius*0.88, radius * 0.045, radius * 0.18);
+    // second
+    second = (second*Math.PI/30);
+    drawSecondHand(ctx, second, radius*0.68, radius*0.3);
+  }
+
+  function drawHand(ctx, pos, length, width, extra) {
+    ctx.save();
+    ctx.beginPath();
+    ctx.rotate(pos);
+    ctx.lineWidth = 1;
+    ctx.moveTo(width*1.2, extra);
+    ctx.lineTo(-width*1.2, extra);
+    ctx.lineTo(-width, -length);
+    ctx.lineTo(width, -length);
+    ctx.lineTo(width*1.2, extra);
+    ctx.fillStyle = 'black';
+    ctx.fill();
+    ctx.restore();
+  }
+
+  function drawSecondHand(ctx, pos, length, extra) {
+    // red dot in the center
+    ctx.save();
+
+    ctx.beginPath();
+    ctx.arc(0, 0, extra/8.5, 0, 2 * Math.PI);
+    ctx.fillStyle = '#F55';
+    ctx.fill();
+
+    ctx.rotate(pos);
+
+    ctx.beginPath();
+    ctx.lineWidth = 6;
+    ctx.moveTo(0, extra);
+    ctx.lineTo(0, -length);
+    ctx.strokeStyle = '#F55';
+    ctx.stroke();
+
+    ctx.beginPath();
+    ctx.arc(0, -length, extra/4, 0, 2 * Math.PI);
+    ctx.fill();
+
+    ctx.restore();
+  }
+
+  startClock();
+  </script>
+
+<script>
+  "use strict";
+
+  class Component {
+    constructor(width, height, colour, x, y, type) {
+      this.type = type;
+      if (type == "image" || type == "bg") {
+        this.image = new Image();
+        this.image.src = colour;
+      }
+      this.width = width;
+      this.height = height;
+      this.speedX = 0;
+      this.speedY = 0;
+      this.x = x;
+      this.y = y;
+      this.colour = colour;
+      this.gravity = 0;
+    }
+
+    update() {
+      let ctx = myGameArea.context;
+      if (this.type == 'text') {
+        ctx.font = this.width + " " + this.height;
+        ctx.fillStyle = this.colour;
+        ctx.fillText(this.text, this.x, this.y);
+      }
+      else if (this.type == "image" || this.type == "bg") {
+        ctx.drawImage(this.image, this.x, this.y, this.width, this.height);
+        if (this.type == "bg") {
+          ctx.drawImage(this.image, this.x + this.width, this.y, this.width, this.height);
+        }
+      }
+      else {
+        ctx.fillStyle = this.colour;
+        ctx.fillRect( this.x, this.y, this.width, this.height );
+      }
+    }
+
+    newPos() {
+      this.x += this.speedX;
+      this.y += this.speedY + this.gravity;
+      if (this.gravity) {
+        if (this.y + this.height >= myGameArea.canvas.height) {
+          this.y = myGameArea.canvas.height - this.height;
+          this.gravity = -this.gravity*0.6;
+        }
+        else {
+          if (this.speedY < 0) this.gravity = 0.05;
+          else this.gravity += 0.01;
+        }
+      }
+      if (this.type == "image") {
+        if (this.speedX != 0 || this.speedY != 0) {
+          this.image.src = "img/ss2.png";
+        }
+        else {
+          this.image.src = "img/ss1.png";
+        }
+      }
+      if (this.type == "bg") {
+        if (this.x == -this.width) this.x = 0;
+      }
+    }
+
+    clicked() {
+      const myleft = this.x;
+      const myright = this.x + this.width;
+      const mytop = this.y;
+      const mybottom = this.y + this.height;
+      if ( (mybottom < myGameArea.y) || (mytop > myGameArea.y) || (myright < myGameArea.x) || (myleft > myGameArea.x)) {
+         return false; 
+      }
+      return true;
+    }
+
+    crashWith(o) {
+      const l = this.x;
+      const r = this.x + this.width;
+      const t = this.y;
+      const b = this.y + this.height;
+      const ol = o.x;
+      const or = o.x + o.width;
+      const ot = o.y;
+      const ob = o.y + o.height;
+      if ( (b < ot) || (t > ob) || (r < ol) || (l > or)) { return false; }
+      return true;
+    }
+  }     
+  
+  class Sound {
+    constructor(src) {
+      this.sound = document.createElement('audio');
+      this.sound.src = src;
+      this.sound.setAttribute('preload', 'auto');
+      this.sound.setAttribute('controls', 'none');
+      this.sound.style.display = 'none';
+      document.body.appendChild( this.sound );
+    }
+
+    play() { this.sound.play(); }
+    stop() { this.sound.pause(); }
+  }
+
+  let myGamePiece;
+  const btnColour = "rgb(0 0 170 / 50%";
+  let myUpBtn = new Component(30, 30, btnColour, 410, 170);
+  let myDownBtn = new Component(30, 30, btnColour, 410, 230);    
+  let myLeftBtn = new Component(30, 30, btnColour, 380, 200);    
+  let myRightBtn = new Component(30, 30, btnColour, 440, 200);
+  let myObstacles = [];
+  let myScore = new Component("30px", "Consolas", "#aaa", 280, 40, "text");
+  let myBackground;
+  let mySound = new Sound('sound/bounce.mp3');
+
+  function startGame() {
+    myGameArea.stop();
+
+    myObstacles = [];
+
+    myGamePiece = new Component(30, 30, "img/ss1.png", 10, 120, "image");
+    myGamePiece.gravity = 0.05;
+
+    myBackground = new Component(656, 270, "img/game-bg.png", 0, 0, "bg");
+    myBackground.speedX = -1;
+
+    myGameArea.start(); 
+  }
+
+  let highScores = {
+    table : document.getElementById('highScores'),
+    scores : [],
+
+    load : function() {
+      this.scores = JSON.parse( localStorage.getItem('scores') );
+      
+      if (! this.scores) this.scores = [];
+
+      while (this.table.rows.length != 1) {
+        this.table.deleteRow(-1);
+      }
+      for (let score of this.scores) {
+        const r = this.table.insertRow(-1);
+        const n = r.insertCell(0);
+        n.innerHTML = score.name;
+        const s = r.insertCell(1);
+        s.innerHTML = score.score;
+      }
+    },
+
+    add : function(playerScore) {
+      if (this.scores.length < 6 || this.scores[this.scores.length-1].score < playerScore)
+      {
+        const playerName = prompt('Well done! You scored ' + playerScore + ". Enter your name for High Scores table");
+        if (!playerName) return;
+        this.scores.push({name: playerName, score: playerScore});
+        this.scores.sort((a, b) => b.score - a.score);
+        while (this.scores.length > 6) this.scores.pop();
+        localStorage.setItem( "scores", JSON.stringify( this.scores ) );
+        this.load();
+      }
+    }
+  }
+
+  highScores.load();
+
+  let myGameArea = {
+    start : function() {
+      this.canvas = document.getElementById('gameArea');
+      this.context = this.canvas.getContext('2d');
+      this.frameNo = 0;                
+      this.interval = setInterval(updateGameArea, 20);
+
+      window.addEventListener('keydown', e => { 
+        myGameArea.keys = (myGameArea.keys || []); myGameArea.keys[e.keyCode] = true; 
+        // disable browser scrolling
+        if ( ["ArrowUp","ArrowDown","ArrowLeft","ArrowRight" ].indexOf(e.code) > -1) { e.preventDefault(); }
+      }, false );
+      window.addEventListener('keyup', e => myGameArea.keys[e.keyCode] = false );
+
+      window.addEventListener( 'mousedown', e => { 
+        let rect = e.target.getBoundingClientRect();
+        myGameArea.x = e.clientX - rect.left;
+        myGameArea.y = e.clientY - rect.top;
+      } );
+      window.addEventListener( 'mouseup', e => { myGameArea.x = false; myGameArea.y = false; } );
+      window.addEventListener('touchstart', e => {
+        let rect = e.target.getBoundingClientRect();
+        const touch = e.changedTouches[0];
+        myGameArea.x = touch.clientX - rect.left;
+        myGameArea.y = touch.clientY - rect.top;
+      }, false );
+      window.addEventListener('touchend', e => { myGameArea.x = false; myGameArea.y = false; }, false );
+    },
+
+    clear : function() {
+      this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    },
+
+    stop : function() {
+      clearInterval(this.interval);
+    }
+  };
+
+  function everyInterval(n) {
+    return (myGameArea.frameNo / n) % 1 == 0;
+  }
+
+  function updateGameArea() {
+    for (let obst of myObstacles) {
+      if (myGamePiece.crashWith(obst)) {
+        mySound.play();
+        myGameArea.stop();
+        highScores.add(myGameArea.frameNo);
+        return;
+      }
+    }
+
+    myGameArea.clear();
+
+    myBackground.newPos();
+    myBackground.update();
+
+    ++myGameArea.frameNo;
+    if ( myGameArea.frameNo == 1 || everyInterval(150) ) {
+      let x = myGameArea.canvas.width;
+      let minHeight = 20;
+      let maxHeight = 200;
+      let height = Math.floor( Math.random() * (maxHeight - minHeight + 1) + minHeight);
+      let minGap = 50;
+      let maxGap = 200;
+      let gap = Math.floor( Math.random() * (maxGap - minGap + 1) + minGap );
+      
+      myObstacles.push(new Component(10, height, '#0A0', x, 0) );
+      myObstacles.push(new Component(10, x - height - gap, '#0A0', x, height + gap) );
+    }
+
+    if (!myGameArea.button) {
+      myGamePiece.speedX = 0;
+      myGamePiece.speedY = 0;
+    }
+    if (myGameArea.keys && myGameArea.keys[37]) { myGamePiece.speedX = -1; };
+    if (myGameArea.keys && myGameArea.keys[39]) { myGamePiece.speedX = 1; };
+    if (myGameArea.keys && myGameArea.keys[38]) { myGamePiece.speedY = -1; };
+    if (myGameArea.keys && myGameArea.keys[40]) { myGamePiece.speedY = 1; };
+
+    if (myGameArea.x && myGameArea.y) {
+      if (myUpBtn.clicked()) { myGamePiece.speedY = -1; }
+      else if (myDownBtn.clicked()) { myGamePiece.speedY = 1; }
+      else if (myLeftBtn.clicked()) { myGamePiece.speedX = -1; }
+      else if (myRightBtn.clicked()) { myGamePiece.speedX = 1; }
+      else { myGamePiece.speedY = -1; } // accelerate
+    }
+
+    for (let obst of myObstacles) {
+      --obst.x;
+      obst.update();
+    }
+
+    myScore.text = "SCORE: " + myGameArea.frameNo;
+    myScore.update();
+
+    myGamePiece.newPos();
+
+    myUpBtn.update();
+    myDownBtn.update();
+    myLeftBtn.update();
+    myRightBtn.update();
+    myGamePiece.update();
+
+    myObstacles = myObstacles.filter(obs => obs.x+obs.width > 0);
+  }
+
+  function moveup() { myGamePiece.speedY -= 1; myGameArea.button = true; }
+  function movedown() { myGamePiece.speedY += 1; myGameArea.button = true; }
+  function moveleft() { myGamePiece.speedX -= 1; myGameArea.button = true; }
+  function moveright() { myGamePiece.speedX += 1; myGameArea.button = true; }
+  function stopMove() {
+    myGameArea.button = false;
+  }
+
+</script>
+
+</body>
+</html>        

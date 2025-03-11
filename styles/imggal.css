@@ -1,0 +1,312 @@
+/* Slideshow container */
+.slideshow-container {
+  max-width: 1000px;
+  position: relative;
+  margin: auto;
+}
+
+.dmbSlides { 
+  display: none;
+  animation-name: dmbSlidesFade;
+  animation-duration: 1.5s;
+}
+
+/* Fading animation */
+@keyframes dmbSlidesFade {
+  from { opacity: .4 }
+  to { opacity: 1 }
+}
+
+
+.dmbSlidesPrev, .dmbSlidesNext {
+  cursor: pointer;
+  position: absolute;
+  top: 50%;
+  width: auto;
+  margin-top: -22px;
+  padding: 16px;
+  color: white;
+  font-weight: bold;
+  font-size: 18px;
+  transition: 0.6s ease;
+  border-radius: 0 4px 4px 0;
+  user-select: none;
+}
+
+/* Position the next button to the right */
+.dmbSlidesNext {
+  right: 0;
+  border-radius: 4px 0 0 4px;
+}
+
+.dmbSlidesPrev:hover, .dmbSlidesNext:hover {
+  background-color: rgba(0, 0, 0, 0.8);
+}
+
+/* The dots/bullets/inidcators */
+.dmbSlidesDot {
+  cursor: pointer;
+  height: 15px;
+  width: 15px;
+  margin: 0 2px;
+  background-color: var(--lgrey);
+  border-radius: 50%;
+  display: inline-block;
+  transition: background-color 0.6s ease;
+}
+
+.dmbSlideActive, .dmbSlidesDot:hover {
+  background-color: white;
+}
+
+/* caption */
+.dmbSlides .text {
+  color: white;
+  font-size: 15px;
+  padding: 8px 12px;
+  position: absolute;
+  bottom: 8px;
+  width: 100%;
+  text-align: center;
+  background-color: rgba(0, 0, 0, 0.2);
+}
+
+/* number / total */
+.dmbSlides .numbertext {
+  color: white;
+  font-size: 12px;
+  padding: 8px 12px;
+  position: absolute;
+  top: 0;
+}
+
+.slideshow-container img {
+  width: 100%;
+}
+
+
+/*
+ *
+ * Lightbox
+ *
+ */
+ .lb-row > .lb-column {
+  padding: 0 4px;
+}
+
+.lb-row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+.lb-column {
+  float: left;
+  width: 25%;
+}
+
+/* Five columns per row */
+.lb-column5 {
+  float: left;
+  width: 20%;
+}
+
+.lb-column > img,
+.lb-column5 > img {
+  width: 100%;
+  object-fit: cover;
+  cursor: pointer;
+}
+
+.lb-modal {
+  display: none;
+  position: fixed;
+  z-index: 9999;
+  padding-top: 80px;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: black;
+}
+
+.lb-modal-content {
+  position: relative;
+  background-color: white;
+  margin: auto;
+  padding: 0;
+  width: 90%;
+  max-width: 1000px;
+  animation: lb-animatezoom 0.6s;
+}
+
+@keyframes lb-animatezoom {
+  from { transform: scale(0) };
+  to   { transform: scale(1) };                
+}
+
+img.lb-hover-shadow { transition: 0.3s; }
+.lb-hover-shadow:hover { box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19); }
+
+.lb-close {
+  color: white;
+  position: absolute;
+  top: -30px;
+  right: -30px;
+  font-size: 35px;
+  font-weight: bold;
+  z-index: 2;
+}
+
+.lb-close-ins {
+  color: white;
+  position: absolute;
+  top: 5px;
+  right: 15px;
+  font-size: 35px;
+  font-weight: bold;
+  z-index: 2;
+  opacity: 0.5;
+}
+
+.lb-close:hover,
+.lb-close:focus,
+.lb-close-ins:hover,
+.lb-close-ins:focus {
+  color: var(--lgrey);
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.lb-slides {
+  display: none;
+  animation-name: dmbSlidesFade;
+  animation-duration: 1.5s;
+}
+
+.lb-slides > img {
+  margin-bottom: -5px;
+}
+
+.lb-caption-container {
+  text-align: center;
+  background-color: black;
+  padding: 2px 16px;
+  color: white;
+}
+
+.lb-prev, .lb-next {
+  cursor: pointer;
+  position: absolute;
+  top: 50%;
+  width: auto;
+  padding: 16px;
+  margin-top: -50px;
+  color: white;
+  font-weight: bold;
+  font-size: 20px;
+  transition: 0.6 ease;
+  border-radius: 0 3px 3px 0;
+  user-select: none;
+}
+
+.lb-next {
+  right: 0;
+  border-radius: 3px 0 0 3px;
+}
+
+.lb-prev:hover, .lb-next:hover {
+  background-color: rgba(0, 0, 0, 0.8);
+}
+
+.lb-numbertext {
+  color: white;
+  font-size: 12px;
+  padding: 8px 12px;
+  position: absolute;
+  top: 0;
+}
+
+img.lb-demo {
+  opacity: 0.5;
+}
+
+img.lb-active,
+img.lb-demo:hover {
+  opacity: 1;
+}
+
+
+.tab-gallery img.lb-hover-shadow {
+  opacity: 0.8;
+}
+
+.tab-gallery img.lb-hover-shadow:hover {
+  opacity: 1;
+}
+
+/*
+*
+* Image Zoom
+*
+*/
+.img-zoom-container { position: relative; }
+
+.img-zoom-result { 
+  border:1px solid var(--lgrey);
+  width: 300px;
+  height: 300px;
+}
+
+.img-zoom-lens {
+  position: absolute;
+  border: 1px solid var(--lgrey);
+  width: 40px;
+  height: 40px;
+}
+
+/*
+*
+* Image Magnifier
+*
+*/
+.img-magnifier-container {
+  position: relative;
+}
+
+.img-magnifier-glass {
+  position: absolute;
+  border: 1px solid black;
+  border-radius: 50%;
+  cursor: none;
+  width: 150px;
+  height: 150px;
+}
+
+/*
+*
+* Image comparision slider 
+*
+*/
+.img-comp-img {
+  position: absolute;
+  width: auto;
+  height: auto;
+  overflow: hidden;
+}
+
+.img-comp-img img {
+  display: block;
+}
+
+.img-comp-slider {
+  position: absolute;
+  z-index: 9;
+  cursor: ew-resize;
+  width: 45px;
+  height: 45px;
+  background-color: var(--purple);
+  opacity: 0.6;
+  border-radius: 50%;
+}
